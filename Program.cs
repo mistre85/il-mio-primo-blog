@@ -1,7 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// già presente (non inserire)
 builder.Services.AddControllersWithViews();
+
+//da inserirsi sotto a AddControllersWithViews
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
@@ -22,6 +26,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Post}/{action=Index}/{id?}");
 
 app.Run();

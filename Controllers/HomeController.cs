@@ -15,11 +15,19 @@ namespace il_mio_primo_blog.Controllers
 
         public IActionResult Index()
         {
+            ViewData["title"] = "Home";
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            ViewData["title"] = "About";
             return View();
         }
 
         public IActionResult Privacy()
         {
+            ViewData["title"] = "Privacy";
             return View();
         }
 

@@ -1,0 +1,35 @@
+﻿
+<h1>Home</h1>
+
+@*Inizializzo la property Model di RazorPage *@
+@model List<Post>
+
+@if(Model.Count() == 0){
+    <h3 class="text-center">Non sono presenti post.</h3>
+}else{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Immagine</th>
+                <th>Titolo</th>
+                <th>Descrizione</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Post post in Model){
+                <tr>
+                    <td><a href="@Url.Action("Detail",new {id = post.Id})">@post.Id</a></td>
+                    <td class="image">
+                        <img class="post-list-image" src="@post.Image">
+                    </td>
+                    <td class="title">@post.Title</td>
+                    <td class="description">
+                        @post.Description    
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
