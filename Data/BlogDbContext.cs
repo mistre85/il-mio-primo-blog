@@ -1,6 +1,7 @@
-﻿using il_mio_primo_blog.Models;
+﻿
+
+using il_mio_primo_blog.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace il_mio_primo_blog.Data
 {
