@@ -1,7 +1,9 @@
 ﻿
 using il_mio_primo_blog.Data;
 using il_mio_primo_blog.Models;
+using il_mio_primo_blog.Models.Form;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace il_mio_primo_blog.Controllers
@@ -20,36 +22,44 @@ namespace il_mio_primo_blog.Controllers
         {
             //BlogDbContext db = new BlogDbContext();
 
-            List<Post> listaPost = db.Posts.ToList();
+            List<Post> listaPost = db.Posts.Include(post => post.Category).ToList();
 
             return View(listaPost);
         }
-        public IActionResult Details(int id)
+        public IActionResult Detail(int id)
         {
 
             //BlogDbContext db = new BlogDbContext();
 
-            Post post = db.Posts.Where(p => p.Id == id).FirstOrDefault();
+            Post post = db.Posts.Where(p => p.Id == id).Include("Category").FirstOrDefault();
 
             return View(post);
         }
 
         public IActionResult Create()
         {
-            return View();
+            PostForm formData = new PostForm();
+
+            formData.Post = new Post();
+            formData.Categories = db.Categories.ToList();
+
+            return View(formData);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Post post)
+        public IActionResult Create(PostForm formData)
         {
             if (!ModelState.IsValid)
             {
-                //return View(post);
-                return View();
+                //return View(postItem);
+                //PostForm postItem = new PostForm();
+                //postItem.Post = postItem;
+                formData.Categories = db.Categories.ToList();
+                return View(formData);
             }
 
-            db.Posts.Add(post);
+            db.Posts.Add(formData.Post);
             db.SaveChanges();
 
             return RedirectToAction("Index");
@@ -57,26 +67,32 @@ namespace il_mio_primo_blog.Controllers
 
         public IActionResult Update(int id)
         {
+            
             Post post = db.Posts.Where(post => post.Id == id).FirstOrDefault();
 
             if (post == null)
                 return NotFound();
 
-            //return View() --> non funziona perchè non ha la memoria della post
-            return View(post);
+            PostForm formData = new PostForm();
+
+            formData.Post = post;
+            formData.Categories = db.Categories.ToList();
+
+            //return View() --> non funziona perchè non ha la memoria della postItem
+            return View(formData);
         }
 
         //[HttpPost]
-        //public IActionResult Update(Post post)
+        //public IActionResult Update(Post postItem)
         //{
 
         //    if (!ModelState.IsValid)
         //    {
-        //        //return View(post);
+        //        //return View(postItem);
         //        return View();
         //    }
 
-        //    db.Posts.Update(post);
+        //    db.Posts.Update(postItem);
         //    db.SaveChanges();
 
         //    return RedirectToAction("Index");
@@ -85,27 +101,33 @@ namespace il_mio_primo_blog.Controllers
         //altro modo
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(int id, Post formData)
+        public IActionResult Update(int id, PostForm formData)
         {
 
             if (!ModelState.IsValid)
             {
-                //return View(post);
-                return View();
+                //return View(postItem);
+                formData.Categories = db.Categories.ToList();
+                return View(formData);
             }
 
-            Post post = db.Posts.Where(post => post.Id == id).FirstOrDefault();
+            /*update esplicito con nuovo oggetto
+            Post postItem = db.Posts.Where(post => post.Id == id).FirstOrDefault();
 
-            if (post == null)
+            if (postItem == null)
             {
                 return NotFound();
             }
 
-            post.Title = formData.Title;
-            post.Description = formData.Description;
-            post.Image = formData.Image;
+            postItem.Title = formData.Post.Title;
+            postItem.Description = formData.Post.Description;
+            postItem.Image = formData.Post.Image;
+            postItem.CategoryId = formData.Post.CategoryId;
+            */
 
-            //db.Posts.Update(post);
+            //update implicito
+            formData.Post.Id = id;
+            db.Posts.Update(formData.Post);
             db.SaveChanges();
 
             return RedirectToAction("Index");
