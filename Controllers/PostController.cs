@@ -103,6 +103,10 @@ namespace il_mio_primo_blog.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, PostForm formData)
         {
+            //da mettere qui per evitare problemi con update nello scenario seguente
+            //1. dati invalidi
+            //2. dati validi
+            formData.Post.Id = id;
 
             if (!ModelState.IsValid)
             {
@@ -126,7 +130,7 @@ namespace il_mio_primo_blog.Controllers
             */
 
             //update implicito
-            formData.Post.Id = id;
+            
             db.Posts.Update(formData.Post);
             db.SaveChanges();
 
