@@ -3,8 +3,10 @@ using il_mio_primo_blog.Data;
 using il_mio_primo_blog.Models;
 using il_mio_primo_blog.Models.Form;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Diagnostics;
 
 namespace il_mio_primo_blog.Controllers
 {
@@ -31,7 +33,12 @@ namespace il_mio_primo_blog.Controllers
 
             //BlogDbContext db = new BlogDbContext();
 
-            Post post = db.Posts.Where(p => p.Id == id).Include("Category").FirstOrDefault();
+            Post post = db.Posts.Where(p => p.Id == id).Include("Category").Include("Tags").FirstOrDefault();
+
+            if(post == null)
+            {
+                return NotFound();
+            }
 
             return View(post);
         }
@@ -42,6 +49,14 @@ namespace il_mio_primo_blog.Controllers
 
             formData.Post = new Post();
             formData.Categories = db.Categories.ToList();
+            formData.Tags = new List<SelectListItem>();
+
+            List<Tag> tagList = db.Tags.ToList();
+            
+            foreach(Tag tag in tagList)
+            {
+                formData.Tags.Add(new SelectListItem(tag.Title,tag.Id.ToString()));
+            }
 
             return View(formData);
         }
@@ -56,7 +71,26 @@ namespace il_mio_primo_blog.Controllers
                 //PostForm postItem = new PostForm();
                 //postItem.Post = postItem;
                 formData.Categories = db.Categories.ToList();
+                //formData.Tags = db.Tags.ToList();
+                formData.Tags = new List<SelectListItem>();
+
+                List<Tag> tagList = db.Tags.ToList();
+
+                foreach (Tag tag in tagList)
+                {
+                    formData.Tags.Add(new SelectListItem(tag.Title, tag.Id.ToString()));
+                }
+
                 return View(formData);
+            }
+
+            //associazione dei tag selezionato dall'utente al modello
+            formData.Post.Tags = new List<Tag>();
+
+            foreach (int tagId in formData.SelectedTags)
+            {
+                Tag tag = db.Tags.Where(t => t.Id == tagId).FirstOrDefault();
+                formData.Post.Tags.Add(tag);
             }
 
             db.Posts.Add(formData.Post);
@@ -68,7 +102,7 @@ namespace il_mio_primo_blog.Controllers
         public IActionResult Update(int id)
         {
             
-            Post post = db.Posts.Where(post => post.Id == id).FirstOrDefault();
+            Post post = db.Posts.Where(post => post.Id == id).Include(p=>p.Tags).FirstOrDefault();
 
             if (post == null)
                 return NotFound();
@@ -77,6 +111,18 @@ namespace il_mio_primo_blog.Controllers
 
             formData.Post = post;
             formData.Categories = db.Categories.ToList();
+            formData.Tags = new List<SelectListItem>();
+
+            List<Tag> tagsList = db.Tags.ToList();
+
+            foreach (Tag tag in tagsList)
+            {
+                formData.Tags.Add(new SelectListItem(
+                    tag.Title,
+                    tag.Id.ToString(),
+                    post.Tags.Any(t => t.Id == tag.Id)
+                   ));
+            }
 
             //return View() --> non funziona perchè non ha la memoria della postItem
             return View(formData);
@@ -106,32 +152,53 @@ namespace il_mio_primo_blog.Controllers
             //da mettere qui per evitare problemi con update nello scenario seguente
             //1. dati invalidi
             //2. dati validi
-            formData.Post.Id = id;
+           
 
             if (!ModelState.IsValid)
             {
+                formData.Post.Id = id;
                 //return View(postItem);
                 formData.Categories = db.Categories.ToList();
+                formData.Tags = new List<SelectListItem>();
+
+                List<Tag> tagList = db.Tags.ToList();
+
+                foreach (Tag tag in tagList)
+                {
+                    formData.Tags.Add(new SelectListItem(tag.Title, tag.Id.ToString()));
+                }
+
                 return View(formData);
             }
 
-            /*update esplicito con nuovo oggetto
-            Post postItem = db.Posts.Where(post => post.Id == id).FirstOrDefault();
+            //update esplicito con nuovo oggetto
+            Post postItem = db.Posts.Where(post => post.Id == id).Include(p => p.Tags).FirstOrDefault();
 
             if (postItem == null)
             {
                 return NotFound();
             }
 
+          
             postItem.Title = formData.Post.Title;
             postItem.Description = formData.Post.Description;
             postItem.Image = formData.Post.Image;
             postItem.CategoryId = formData.Post.CategoryId;
-            */
 
-            //update implicito
-            
-            db.Posts.Update(formData.Post);
+            postItem.Tags.Clear();
+
+            if(formData.SelectedTags == null)
+            {
+                formData.SelectedTags = new List<int>();
+            }
+          
+            foreach (int tagId in formData.SelectedTags)
+            {
+                Tag tag = db.Tags.Where(t => t.Id == tagId).FirstOrDefault();
+                postItem.Tags.Add(tag);
+            }
+
+            //db.Posts.Update(formData.Post);
             db.SaveChanges();
 
             return RedirectToAction("Index");

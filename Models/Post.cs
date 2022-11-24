@@ -32,6 +32,9 @@ namespace il_mio_primo_blog.Models
         //relazione 1 a n con Category l'istanza del record nelle query
         public Category? Category { get; set; }
 
+        //relazione molti a molti con Tag
+        public List<Tag>? Tags { get; set; }
+
         public Post()
         {
 

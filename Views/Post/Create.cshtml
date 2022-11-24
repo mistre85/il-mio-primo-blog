@@ -24,9 +24,7 @@
                     <textarea asp-for="Post.Description" rows="10" class="d-block w-100"></textarea>
                     <span asp-validation-for="Post.Description" class="text-danger"></span>
                 </div>
-                <div class="text-end">
-                    <input type="submit" class="btn btn-small btn-success" value="Salva">
-                </div>
+                
                 <div class="mb-3">
                     <strong>Categoria:</strong>
                     <select asp-for="Post.CategoryId" rows="10" class="d-block w-100">                  
@@ -42,6 +40,20 @@
                             }
                         }
                     </select>
+                </div>
+                <div class="mb-3">
+                    <strong>Tag:</strong>
+                    <select 
+                            asp-for="SelectedTags"
+                            asp-items="@Model.Tags"
+                            multiple="multiple"
+                            size="10"
+                            class="form-control mb-2 mr-sm-2 ml-sm-3 leftList">
+                            
+                    </select>
+                </div>
+                <div class="text-end">
+                    <input type="submit" class="btn btn-small btn-success" value="Salva">
                 </div>
             </form>
         </div>

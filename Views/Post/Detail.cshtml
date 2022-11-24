@@ -21,6 +21,14 @@
                 <strong>Categoria:</strong>
                 @Model.Category.Title
             </p>
+            <p>
+                <strong>Tags:</strong>
+                @foreach(Tag tag in Model.Tags){
+                    <div>
+                        <span class="badge bg-primary">@tag.Title</span>
+                    </div>
+                }
+            </p>
         </div>
     </div>
 </div>
