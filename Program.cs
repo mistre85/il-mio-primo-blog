@@ -1,4 +1,8 @@
+using il_mio_primo_blog.Models.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IDbPostRepository, DbPostRepository>();
 
 // già presente (non inserire)
 builder.Services.AddControllersWithViews();
