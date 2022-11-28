@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_GuestLayout";
+}
+    
+    <div class="row js_no_post text-center d-none">
+        <div class="col-12">
+            <h3>Non hai inserito alcun post</h3>
+        </div>
+    </div>
+    <div class="row js_post_table d-none">
+        <!-- qui verranno mostrati gli elementi -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+
+    <script type="text/javascript">
+    
+        axios.get('/api/post/get').then(res =>{
+
+            if (res.data.length == 0) {
+
+                document.querySelector('.js_no_post').classList.remove('d-none');
+                document.querySelector('.js_post_table').classList.add('d-none');
+
+            } else {
+
+                document.querySelector('.js_post_table').classList.remove('d-none');
+                document.querySelector('.js_no_post').classList.add('d-none');
+
+                document.querySelector('.js_post_table').innerHTML = '';
+
+                res.data.forEach(post => {
+
+                    console.log('post', post);
+
+                    document.querySelector('.js_post_table').innerHTML +=
+                        `
+                                                        <div class="col-12 col-md-4 p-2">
+                                    <div class="card post h-100">
+                                      <img src="${post.image}" class="card-img-top" alt="...">
+                                      <div class="card-body">
+                                        <h5 class="card-title">${post.title}</h5>
+                                        <p class="card-text">${post.description}</p>
+                                      </div>
+                                    </div>
+                                </div>
+                                `;
+                });
+            }
+
+
+            }).catch(error => {
+                debugger;
+                console.log(error);
+            })
+    
+    </script>

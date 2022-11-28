@@ -2,7 +2,7 @@ using il_mio_primo_blog.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IDbPostRepository, DbPostRepository>();
+builder.Services.AddScoped<IPostRepository, DbPostRepository>();
 
 // già presente (non inserire)
 builder.Services.AddControllersWithViews();
@@ -30,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Post}/{action=Index}/{id?}");
+    pattern: "{controller=Guest}/{action=Index}/{id?}");
 
 app.Run();

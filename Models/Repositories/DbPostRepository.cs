@@ -4,7 +4,7 @@ using Microsoft.SqlServer.Server;
 
 namespace il_mio_primo_blog.Models.Repositories
 {
-    public class DbPostRepository : IDbPostRepository
+    public class DbPostRepository : IPostRepository
     {
         private BlogDbContext db;
 
@@ -14,6 +14,11 @@ namespace il_mio_primo_blog.Models.Repositories
         }
 
         public List<Post> All()
+        {
+            return AllWithRelations();
+        }
+
+        public List<Post> AllWithRelations()
         {
             return db.Posts.Include(post => post.Category).Include(post => post.Tags).ToList();
         }
@@ -42,6 +47,7 @@ namespace il_mio_primo_blog.Models.Repositories
         public void Update(Post post, Post formData, List<int>? selectedTags)
         {
 
+          
             if (selectedTags == null)
             {
                 selectedTags = new List<int>();

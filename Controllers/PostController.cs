@@ -17,9 +17,9 @@ namespace il_mio_primo_blog.Controllers
 
         BlogDbContext db;
 
-        IDbPostRepository postRepository;
+        IPostRepository postRepository;
 
-        public PostController(IDbPostRepository _postRepository) : base()
+        public PostController(IPostRepository _postRepository) : base()
         {
             //da togliere
             db = new BlogDbContext();

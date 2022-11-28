@@ -2,7 +2,7 @@
 
 namespace il_mio_primo_blog.Models.Repositories
 {
-    public class ListPostRepository : IDbPostRepository
+    public class ListPostRepository : IPostRepository
     {
         public static List<Post> Posts = new List<Post>();
 
