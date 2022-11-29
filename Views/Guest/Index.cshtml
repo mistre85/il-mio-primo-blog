@@ -84,9 +84,12 @@
 
                         console.log('post', post);
 
+
+
                         document.querySelector('.js_post_table').innerHTML +=
-                            `<a href="/Guest/Details/${post.id}">
+                            `
                                 <div class="col-12 col-md-4 p-2">
+                                   <a href="/Guest/Details/${post.id}">
                                     <div  class="card post h-100">
                                         <img src="${post.image}" class="card-img-top" alt="...">
                                         <div class="card-body">
@@ -94,8 +97,10 @@
                                         <p class="card-text">${post.description}</p>
                                         </div>
                                     </div>
+                                   </a>
+                                   
                                 </div>
-                            </a>
+                            
                                             `;
 
 

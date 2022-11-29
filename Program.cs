@@ -1,6 +1,14 @@
 using il_mio_primo_blog.Models.Repositories;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    opt.JsonSerializerOptions.WriteIndented = true;
+
+});
 
 builder.Services.AddScoped<IPostRepository, DbPostRepository>();
 
