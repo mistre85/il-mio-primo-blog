@@ -71,5 +71,9 @@ namespace il_mio_primo_blog.Models.Repositories
 
         }
 
+        public List<Post> SearchByTitle(string? title)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

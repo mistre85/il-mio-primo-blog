@@ -13,6 +13,11 @@ namespace il_mio_primo_blog.Controllers
         }
 
 
-     
+        public IActionResult Details(int id)
+        {
+            ViewData["title"] = "Dettaglio Post";
+            return View(id);
+        }
+
     }
 }

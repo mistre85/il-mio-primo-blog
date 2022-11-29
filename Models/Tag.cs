@@ -1,4 +1,6 @@
-﻿namespace il_mio_primo_blog.Models
+﻿using System.Text.Json.Serialization;
+
+namespace il_mio_primo_blog.Models
 {
     public class Tag
     {
@@ -6,6 +8,7 @@
 
         public string Title { get; set; }
 
+       
         //relazione molti a molti con Post
         public List<Post>? Posts { get; set; }
     }

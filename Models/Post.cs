@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.Xml;
+using System.Text.Json.Serialization;
 
 namespace il_mio_primo_blog.Models
 {
-    
+
     public class Post
     {
         public int Id { get; set; }

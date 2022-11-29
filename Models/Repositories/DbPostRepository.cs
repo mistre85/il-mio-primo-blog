@@ -78,6 +78,17 @@ namespace il_mio_primo_blog.Models.Repositories
             db.SaveChanges();
         }
 
+        public List<Post> SearchByTitle(string? title)
+        {
+
+            IQueryable<Post> query = db.Posts.Include("Category").Include("Tags");
+
+            if (title == null)
+                return query.ToList();
+
+            return query.Where(post => post.Title.ToLower().Contains(title.ToLower())).ToList();
+        }
+
 
         //public void Update(int id, Post formData, List<int>? selectedTags)
         //{

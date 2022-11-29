@@ -16,18 +16,30 @@ namespace il_mio_primo_blog.Controllers.Api
             _postRepository = postRepository;
         }
 
-        public IActionResult Test()
-        {
-            
-            return Ok("test");
-
-        }
-
         public IActionResult Get()
         {
             List<Post> posts = _postRepository.All();
             return Ok(posts);
            
         }
+
+        public IActionResult Search(string? title)
+        {
+
+            List<Post> posts = _postRepository.SearchByTitle(title);
+
+            return Ok(posts);
+
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Details(int id)
+        {
+            Post post = _postRepository.GetById(id);
+
+            return Ok(post);
+        }
     }
+
+
 }

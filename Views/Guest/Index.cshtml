@@ -1,7 +1,11 @@
 ﻿@{
     Layout = "_GuestLayout";
 }
-    
+
+<div>
+    <input id="user_search" type="text" class="js_search form-control" />
+    <!-- input id="user_search" type="text" class="js_search form-control" onkeyup="OnUserInput(this)" /> -->
+</div>
     <div class="row js_no_post text-center d-none">
         <div class="col-12">
             <h3>Non hai inserito alcun post</h3>
@@ -11,47 +15,93 @@
         <!-- qui verranno mostrati gli elementi -->
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+@section Scripts{
 
     <script type="text/javascript">
-    
+
+        document.querySelector(".js_search").addEventListener('keyup', OnUserInputEvent);
+
+        var timeoutId = null;
+        
+        function OnUserInputEvent(e){
+           
+            let query = e.target.value;
+     
+            if(timeoutId  != null)
+                clearTimeout(timeoutId);
+
+                timeoutId = setTimeout(() => {
+
+                axios.get('/api/post/search', {
+                    params: {
+                        title: query
+                    }
+                }).then(response => {
+
+                    RenderPost(response.data);
+
+                }).catch(error => {
+                    console.log(error);
+                })
+            
+            }, 300);
+
+            
+
+        }
+
+        //function OnUserInput(obj){
+        //    console.log(obj.value);
+        //}
+
+        console.log("dopo",document.querySelector(".js_search").value);
+
         axios.get('/api/post/get').then(res =>{
 
-            if (res.data.length == 0) {
-
-                document.querySelector('.js_no_post').classList.remove('d-none');
-                document.querySelector('.js_post_table').classList.add('d-none');
-
-            } else {
-
-                document.querySelector('.js_post_table').classList.remove('d-none');
-                document.querySelector('.js_no_post').classList.add('d-none');
-
-                document.querySelector('.js_post_table').innerHTML = '';
-
-                res.data.forEach(post => {
-
-                    console.log('post', post);
-
-                    document.querySelector('.js_post_table').innerHTML +=
-                        `
-                                                        <div class="col-12 col-md-4 p-2">
-                                    <div class="card post h-100">
-                                      <img src="${post.image}" class="card-img-top" alt="...">
-                                      <div class="card-body">
-                                        <h5 class="card-title">${post.title}</h5>
-                                        <p class="card-text">${post.description}</p>
-                                      </div>
-                                    </div>
-                                </div>
-                                `;
-                });
-            }
+               RenderPost(res.data);
 
 
             }).catch(error => {
                 debugger;
                 console.log(error);
             })
+
+
+            function RenderPost(data){
+                if (data.length == 0) {
+
+                    document.querySelector('.js_no_post').classList.remove('d-none');
+                    document.querySelector('.js_post_table').classList.add('d-none');
+
+                } else {
+
+                    document.querySelector('.js_post_table').classList.remove('d-none');
+                    document.querySelector('.js_no_post').classList.add('d-none');
+
+                    document.querySelector('.js_post_table').innerHTML = '';
+
+                    data.forEach(post => {
+
+                        console.log('post', post);
+
+                        document.querySelector('.js_post_table').innerHTML +=
+                            `<a href="/Guest/Details/${post.id}">
+                                <div class="col-12 col-md-4 p-2">
+                                    <div  class="card post h-100">
+                                        <img src="${post.image}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                        <h5 class="card-title">${post.title}</h5>
+                                        <p class="card-text">${post.description}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                                            `;
+
+
+                    });
+                }
+            }
     
     </script>
+}

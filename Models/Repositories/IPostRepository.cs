@@ -9,6 +9,6 @@
 
         void Delete(Post post);
         void Update(Post post, Post formData, List<int>? selectedTags);
-    
+        List<Post> SearchByTitle(string? title);
     }
 }
