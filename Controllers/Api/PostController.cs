@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace il_mio_primo_blog.Controllers.Api
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]",Order = 1)]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -16,28 +16,32 @@ namespace il_mio_primo_blog.Controllers.Api
             _postRepository = postRepository;
         }
 
-        public IActionResult Get()
-        {
-            List<Post> posts = _postRepository.All();
-            return Ok(posts);
-           
-        }
 
-        public IActionResult Search(string? title)
+        // api/post
+        // api/post?title=[query]
+        [HttpGet]
+        public IActionResult Get(string? title)
         {
-
             List<Post> posts = _postRepository.SearchByTitle(title);
 
             return Ok(posts);
 
         }
 
+        // api/post/[id]
         [HttpGet("{id}")]
-        public IActionResult Details(int id)
+        public IActionResult Get(int id)
         {
             Post post = _postRepository.GetById(id);
 
             return Ok(post);
+        }
+
+        // /api/post
+        [HttpPost]
+        public IActionResult Update(Post post)
+        {
+            return Ok("ok");
         }
     }
 

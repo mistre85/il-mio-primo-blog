@@ -1,3 +1,4 @@
+using il_mio_primo_blog.Data;
 using il_mio_primo_blog.Models.Repositories;
 using System.Text.Json.Serialization;
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
     opt.JsonSerializerOptions.WriteIndented = true;
 
 });
+
+builder.Services.AddDbContext<BlogDbContext>();
 
 builder.Services.AddScoped<IPostRepository, DbPostRepository>();
 

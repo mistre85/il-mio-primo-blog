@@ -32,7 +32,7 @@
 
                 timeoutId = setTimeout(() => {
 
-                axios.get('/api/post/search', {
+                axios.get('/api/post', {
                     params: {
                         title: query
                     }
@@ -56,7 +56,7 @@
 
         console.log("dopo",document.querySelector(".js_search").value);
 
-        axios.get('/api/post/get').then(res =>{
+        axios.get('/api/post').then(res =>{
 
                RenderPost(res.data);
 

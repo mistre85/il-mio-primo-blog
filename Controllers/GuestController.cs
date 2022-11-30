@@ -19,5 +19,11 @@ namespace il_mio_primo_blog.Controllers
             return View(id);
         }
 
+        public IActionResult Contact()
+        {
+            ViewData["title"] = "Contattaci";
+            return View();
+        }
+
     }
 }

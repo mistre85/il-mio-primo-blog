@@ -17,16 +17,16 @@ namespace il_mio_primo_blog.Models
 
         // Post.cs
 
-        [Required(ErrorMessage = "Il campo è obbligatorio")]
+        
         [StringLength(75, ErrorMessage = "Il titolo non può essere oltre i 75 caratteri")]
         [AlmenoDueParole]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Il campo è obbligatorio")]
+        
         [Column(TypeName = "text")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Il campo è obbligatorio")]
+       
         public string Image { get; set; }
 
         //relazione 1 a n con Category ed è la vera e propria chiave esterna

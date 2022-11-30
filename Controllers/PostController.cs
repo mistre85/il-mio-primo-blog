@@ -12,6 +12,8 @@ using System.Diagnostics;
 
 namespace il_mio_primo_blog.Controllers
 {
+
+    [Route("[controller]/[action]/{id?}",Order = 0)]
     public class PostController : Controller
     {
 
@@ -19,10 +21,10 @@ namespace il_mio_primo_blog.Controllers
 
         IPostRepository postRepository;
 
-        public PostController(IPostRepository _postRepository) : base()
+        public PostController(IPostRepository _postRepository,BlogDbContext _db) : base()
         {
             //da togliere
-            db = new BlogDbContext();
+            db = _db;
 
             postRepository = _postRepository;
         }

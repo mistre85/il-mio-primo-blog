@@ -8,9 +8,9 @@ namespace il_mio_primo_blog.Models.Repositories
     {
         private BlogDbContext db;
 
-        public DbPostRepository()
+        public DbPostRepository(BlogDbContext _db)
         {
-            db = new BlogDbContext();
+            db = _db;
         }
 
         public List<Post> All()
