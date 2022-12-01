@@ -42,8 +42,11 @@ app.MapRazorPages();
 
 #gestione delle navigaazioni logged/notlogged
 
+- da mettere dentro il vostro "guest layout"
 <li class="nav-item">
 		  <a class="nav-link" aria-current="page" href="@Url.Action("Index", "Post")">Admin</a>
 		</li>
 		<!-- code omitted -->
+
+- da mettere dentro il vostro "guest layout" e nel vostro "logged layout"
 <partial name="_LoginPartial" />

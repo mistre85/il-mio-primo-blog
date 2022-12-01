@@ -6,8 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("BlogDbContextConnection");builder.Services.AddDbContext<BlogDbContext>(options =>
-    options.UseSqlServer(connectionString));builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+var connectionString = builder.Configuration.GetConnectionString("BlogDbContextConnection");
+
+builder.Services.AddDbContext<BlogDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<BlogDbContext>();
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
@@ -16,8 +21,6 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
     opt.JsonSerializerOptions.WriteIndented = true;
 
 });
-
-builder.Services.AddDbContext<BlogDbContext>();
 
 builder.Services.AddScoped<IPostRepository, DbPostRepository>();
 
