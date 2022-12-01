@@ -1,8 +1,14 @@
 using il_mio_primo_blog.Data;
 using il_mio_primo_blog.Models.Repositories;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("BlogDbContextConnection");builder.Services.AddDbContext<BlogDbContext>(options =>
+    options.UseSqlServer(connectionString));builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<BlogDbContext>();
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
 {
@@ -15,7 +21,7 @@ builder.Services.AddDbContext<BlogDbContext>();
 
 builder.Services.AddScoped<IPostRepository, DbPostRepository>();
 
-// già presente (non inserire)
+// giï¿½ presente (non inserire)
 builder.Services.AddControllersWithViews();
 
 //da inserirsi sotto a AddControllersWithViews
@@ -37,7 +43,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//dopo routing
+app.UseAuthentication();
+
 app.UseAuthorization();
+
+//prima del MapControllerRoute
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

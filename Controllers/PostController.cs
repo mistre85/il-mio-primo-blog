@@ -3,6 +3,7 @@ using il_mio_primo_blog.Data;
 using il_mio_primo_blog.Models;
 using il_mio_primo_blog.Models.Form;
 using il_mio_primo_blog.Models.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using System.Diagnostics;
 
 namespace il_mio_primo_blog.Controllers
 {
-
+    [Authorize]
     [Route("[controller]/[action]/{id?}",Order = 0)]
     public class PostController : Controller
     {
