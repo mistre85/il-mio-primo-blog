@@ -4,6 +4,9 @@
 
 dotnet tool install -g dotnet-aspnet-codegenerator
 
+- se non compatibile installare la versione desiderata con l'opzione --version=x.y
+
+
 dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version=6.0
 dotnet add package Microsoft.AspNetCore.Identity.UI --version=6.0
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version=6.0
@@ -17,7 +20,7 @@ dotnet ef migrations add CreateIdentityTables
 dotnet ef database update
 
 #scaffolidng dell'auth
-dotnet-aspnet-codegenerator identity --dbContext il_mio_primo_blog.Data.BlogDbContext --files "Account.Login;Account.Logout;Account.Register"
+dotnet-aspnet-codegenerator identity --dbContext BlogDbContext --files "Account.Login;Account.Logout;Account.Register"
 
 #sistemiamo il context
 - copiamo costruttore e metodo OnModelCreating all'interno del dbcontext originale (nostro)
